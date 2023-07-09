@@ -11,7 +11,7 @@ export default function App() {
 	}
 
 	return (
-		<>
+		<div className="container" style={{ backgroundColor: "#DEEBF8" }}>
 			{!isQuizzing && <Start start={toggleQuiz} />}
 			{isQuizzing && (
 				<div>
@@ -19,6 +19,6 @@ export default function App() {
 					<button onClick={toggleQuiz}>Play Again</button>
 				</div>
 			)}
-		</>
+		</div>
 	);
 }
