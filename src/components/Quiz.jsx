@@ -1,3 +1,12 @@
 export default function Quiz() {
-	return <main>This is the quiz</main>;
+	return (
+		<main>
+			<ul>
+				<li>Answer</li>
+				<li>Answer</li>
+				<li>Answer</li>
+				<li>Answer</li>
+			</ul>
+		</main>
+	);
 }
