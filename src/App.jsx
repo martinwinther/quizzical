@@ -1,24 +1,43 @@
-import { useState } from "react";
-import "./App.css";
-import Quiz from "./components/Quiz";
-import Start from "./components/Start";
+import React, { useEffect, useState } from "react";
+import { Switch, Route } from "react-router-dom";
+import Intro from "./components/Intro";
+import Quizz from "./components/Quizz";
+import Loader from "./components/Loader";
 
-export default function App() {
-	const [isQuizzing, setIsQuizzing] = useState(false);
-
-	function toggleQuiz() {
-		setIsQuizzing((isQuizzing) => !isQuizzing);
-	}
+function App() {
+	const [apiData, setApiData] = useState([{}]);
+	const [isLoading, setIsLoading] = useState(true);
+	const [nextQuiz, setNextQuiz] = useState(false);
+	useEffect(() => {
+		fetch("https://opentdb.com/api.php?amount=5&type=multiple")
+			.then((response) => response.json())
+			.then((data) => {
+				setApiData(data.results);
+				setIsLoading(false);
+			})
+			.catch((error) => {});
+	}, [nextQuiz]);
 
 	return (
-		<div className="container" style={{ backgroundColor: "#DEEBF8" }}>
-			{!isQuizzing && <Start start={toggleQuiz} />}
-			{isQuizzing && (
-				<div>
-					<Quiz />
-					<button onClick={toggleQuiz}>Play Again</button>
-				</div>
-			)}
-		</div>
+		<React.Fragment>
+			<Switch>
+				<Route exact path="/">
+					<Intro />
+				</Route>
+				<Route path="/start-quiz">
+					{isLoading ? (
+						<Loader />
+					) : (
+						<Quizz
+							data={apiData}
+							setNextQuiz={setNextQuiz}
+							setIsLoading={setIsLoading}
+						/>
+					)}
+				</Route>
+			</Switch>
+		</React.Fragment>
 	);
 }
+
+export default App;
